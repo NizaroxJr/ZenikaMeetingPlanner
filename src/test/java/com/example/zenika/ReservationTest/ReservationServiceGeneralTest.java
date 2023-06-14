@@ -65,37 +65,37 @@ class ReservationServiceGeneralTest {
         when(reservationRepository.findAll()).thenReturn(reservationList);
     }
 
-    // Making a reservation at 4 in the morning
+    // Test case for making a reservation at 4 in the morning (outside the allowable reservation hours)
     @Test
     void reservationLeftOutOfRange() {
         // Given
-        NewReservation newReservation=new NewReservation(4, ReservationType.RS, 8);
+        NewReservation newReservation = new NewReservation(4, ReservationType.RS, 8);
         // When
-        Response<Reservation> result=this. reservationTestService.createReservation(newReservation);
+        Response<Reservation> result = this.reservationTestService.createReservation(newReservation);
         // Then
         assertThat(result.isError()).isTrue();
     }
 
+    // Test case for making a reservation at 23 (11 PM) in the evening (outside the allowable reservation hours)
     @Test
     void reservationRightOutOfRange() {
         // Given
-        NewReservation newReservation=new NewReservation(23, ReservationType.RS, 8);
+        NewReservation newReservation = new NewReservation(23, ReservationType.RS, 8);
         // When
-        Response<Reservation> result=this. reservationTestService.createReservation(newReservation);
+        Response<Reservation> result = this.reservationTestService.createReservation(newReservation);
         // Then
         assertThat(result.isError()).isTrue();
     }
 
+    // Test case for making a reservation at 11 in the morning (within the allowable reservation hours)
     @Test
     void reservationInRange() {
         // Given
-        NewReservation newReservation=new NewReservation(11, ReservationType.RS, 8);
+        NewReservation newReservation = new NewReservation(11, ReservationType.RS, 8);
         // When
-        Response<Reservation> result=this. reservationTestService.createReservation(newReservation);
+        Response<Reservation> result = this.reservationTestService.createReservation(newReservation);
         // Then
         assertThat(result.isError()).isFalse();
     }
-
-
 
 }

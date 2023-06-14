@@ -72,45 +72,52 @@ public class ReservationServiceMondayTest {
     @Test
     @Order(1)
     void MondayUseCaseTest() {
+        // Test Case 1: Valid reservation for 8 people in a VC room at 9 AM
         NewReservation newReservation1 = new NewReservation(9, ReservationType.VC, 8);
-        Response<Reservation> result1 = this. reservationTestService.createReservation(newReservation1);
-        Reservation res1=result1.getData();
+        Response<Reservation> result1 = this.reservationTestService.createReservation(newReservation1);
+        Reservation res1 = result1.getData();
         res1.setRoom(roomsList.get(0));
         reservationList.add(res1);
         assertThat(result1.isError()).isFalse();
 
+        // Test Case 2: Invalid reservation for 6 people in a VC room at 9 AM (exceeds room capacity)
         NewReservation newReservation2 = new NewReservation(9, ReservationType.VC, 6);
-        Response<Reservation> result2 = this. reservationTestService.createReservation(newReservation2);
+        Response<Reservation> result2 = this.reservationTestService.createReservation(newReservation2);
         assertThat(result2.isError()).isTrue();
 
-        NewReservation newReservation3=new NewReservation(11, ReservationType.RC, 4);
-        Response<Reservation> result3=this. reservationTestService.createReservation(newReservation3);
+        // Test Case 3: Invalid reservation for 4 people in an RC room at 11 AM (outside allowable reservation hours)
+        NewReservation newReservation3 = new NewReservation(11, ReservationType.RC, 4);
+        Response<Reservation> result3 = this.reservationTestService.createReservation(newReservation3);
         assertThat(result3.isError()).isTrue();
 
-        NewReservation newReservation4=new NewReservation(11, ReservationType.RS, 2);
-        Response<Reservation> result4=this. reservationTestService.createReservation(newReservation4);
-        System.out.println(result4.getMessage());
-        Reservation res4=result4.getData();
+        // Test Case 4: Valid reservation for 2 people in an RS room at 11 AM
+        NewReservation newReservation4 = new NewReservation(11, ReservationType.RS, 2);
+        Response<Reservation> result4 = this.reservationTestService.createReservation(newReservation4);
+        Reservation res4 = result4.getData();
         res4.setRoom(roomsList.get(2));
         reservationList.add(res4);
         assertThat(result4.isError()).isFalse();
 
-        NewReservation newReservation5=new NewReservation(11, ReservationType.SPEC, 9);
-        Response<Reservation> result5=this. reservationTestService.createReservation(newReservation5);
+        // Test Case 5: Invalid reservation for 9 people in a SPEC room at 11 AM (exceeds room capacity)
+        NewReservation newReservation5 = new NewReservation(11, ReservationType.SPEC, 9);
+        Response<Reservation> result5 = this.reservationTestService.createReservation(newReservation5);
         assertThat(result5.isError()).isTrue();
 
-        NewReservation newReservation6=new NewReservation(9, ReservationType.RC, 7);
-        Response<Reservation> result6=this. reservationTestService.createReservation(newReservation6);
+        // Test Case 6: Invalid reservation for 7 people in an RC room at 9 AM (conflicts with existing reservation)
+        NewReservation newReservation6 = new NewReservation(9, ReservationType.RC, 7);
+        Response<Reservation> result6 = this.reservationTestService.createReservation(newReservation6);
         assertThat(result6.isError()).isTrue();
 
+        // Test Case 7: Invalid reservation for 9 people in a VC room at 8 AM (outside allowable reservation hours)
         NewReservation newReservation7 = new NewReservation(8, ReservationType.VC, 9);
-        Response<Reservation> result7 = this. reservationTestService.createReservation(newReservation7);
+        Response<Reservation> result7 = this.reservationTestService.createReservation(newReservation7);
         assertThat(result7.isError()).isTrue();
 
+        // Test Case 8: Invalid reservation for 10 people in a SPEC room at 8 AM (exceeds room capacity)
         NewReservation newReservation8 = new NewReservation(8, ReservationType.SPEC, 10);
-        Response<Reservation> result8 = this. reservationTestService.createReservation(newReservation8);
+        Response<Reservation> result8 = this.reservationTestService.createReservation(newReservation8);
         assertThat(result8.isError()).isTrue();
-
     }
+
 
 }
